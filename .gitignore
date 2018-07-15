@@ -1,0 +1,6 @@
+*.swp
+*.swn
+*.out
+*.gdb*
+*nohup*
+*.pyc
