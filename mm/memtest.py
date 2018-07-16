@@ -22,16 +22,16 @@ class Processer:
 
         self.maps = maps
         self.pid = pid
+        self.mem_path = "/proc/" + self.pid + "/mem"
         self.try_read(self.pid)
 
-    def try_read(self, pid):
+    def pick_mem(self, offset, length):
 
         print self.maps
-        exit()
-        fp_ = open('/proc/' + pid + '/mem', 'rb')
-        fp_.seek(0x400000)
-        content = fp_.read(10)
-        print content.encode('hex')
+        fp_ = open(self.mem_path , 'rb')
+        fp_.seek(offset)
+        content = fp_.read(length)
+        return content.encode('hex')
 
 def mem(pid):
 
@@ -41,5 +41,4 @@ def mem(pid):
     maps = fp.read()
     p = Processer(maps, pid)
     fp.close()
-
 
