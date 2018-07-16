@@ -18,27 +18,23 @@ class Processer:
     code_readwrite = ""
     stack = ""
     
-    def __init__(self, maps, pid):
+    def __init__(self, pid):
 
-        self.maps = maps
         self.pid = pid
+        self.map_path = "/proc/" + self.pid + "/maps"
         self.mem_path = "/proc/" + self.pid + "/mem"
-        self.try_read(self.pid)
 
     def pick_mem(self, offset, length):
 
-        print self.maps
         fp_ = open(self.mem_path , 'rb')
         fp_.seek(offset)
         content = fp_.read(length)
-        return content.encode('hex')
+        return content
 
 def mem(pid):
 
     pid = str(pid)
     pid = pid.strip("[").strip("]")
-    fp = open("/proc/" + pid + "/maps", 'r')
-    maps = fp.read()
-    p = Processer(maps, pid)
-    fp.close()
+    p = Processer(pid)
+    return p
 
