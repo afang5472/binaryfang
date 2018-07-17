@@ -4,3 +4,4 @@
 *.gdb*
 *nohup*
 *.pyc
+peda*
