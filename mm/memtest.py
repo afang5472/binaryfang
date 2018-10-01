@@ -5,7 +5,6 @@
 # desc:
 
 #lambs:
-wait = lambda x: raw_input(x)
 
 # imports
 
@@ -21,22 +20,31 @@ class Processer:
     def __init__(self, pid):
 
         self.pid = pid
-        self.map_path = "/proc/" + self.pid + "/maps"
-        self.mem_path = "/proc/" + self.pid + "/mem"
-        self.fp_map = open(self.map_path, "rb")
-        self.fp_mem = open(self.mem_path, "rb")
-        self.maps = self.fp_map.read()
+        self.prefix = "/proc/" + self.pid
+        self.maps = self.prefix + "/maps"
+        self.mem  = self.prefix + "/mem"
+        self.bin  = self.prefix + "/exe"
+        self.cwd  = self.prefix + "/cwd"
+        self.map_fp = open(self.maps, "rb")
+        self.mem_fp = open(self.mem, "rb")
 
     def pick_mem(self, offset, length):
 
-        self.fp_mem.seek(offset)
-        content = self.fp_mem.read(length)
+        self.mem_fp.seek(offset)
+        content = self.mem_fp.read(length)
         return content
+    
+    def test(self):
+
+        print self.pid
+        print self.prefix
+        print self.maps
+        print self.bin
+        print self.map_fp
 
 def mm(pid):
 
     pid = str(pid)
-    pid = pid.strip("[").strip("]")
     p = Processer(pid)
     return p
 
