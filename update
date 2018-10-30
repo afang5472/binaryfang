@@ -1,0 +1,5 @@
+#!/bin/bash
+
+mkdir -p "/usr/local/lib/python2.7/dist-packages/binaryfang"
+
+cp -r ./* /usr/local/lib/python2.7/dist-packages/binaryfang/
