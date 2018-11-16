@@ -10,7 +10,20 @@ wait = lambda x: raw_input(x)
 # imports
 import os
 
-#We Utilize this module to fight for randomness to adjust program to alsr to certain position.
+#debug switch
+is_debug = 1
+
+#We Mainly Utilize this module to fight for randomness to adjust program to alsr to certain position.
+
+#simple auxiliaries
+def dbg_info(text):
+
+    global is_debug
+    if is_debug:
+        print text
+    else:
+        return
+
 
 class Processer:
  
@@ -44,6 +57,7 @@ class Processer:
         self.pwd       = os.readlink(self.pwd)
         self.args      = open(self.cmdline_path).read().split("\x00")
         #in case pwntools inits with shell=True;
+        #you'd better use shell=False(default option)
         if self.args[0] == "/bin/sh" and self.args[1] == "-c":
             self.args = self.args[2].split(" ")
 
@@ -76,7 +90,7 @@ class Processer:
                 counter += 1
             self.proc_segs[seg_key] = (addr_start, addr_end, 
                                        permission, filename)
-        print self.proc_segs
+        dbg_info(self.proc_segs)
         
 
     #facilities...
