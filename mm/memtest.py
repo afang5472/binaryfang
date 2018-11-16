@@ -9,21 +9,9 @@ wait = lambda x: raw_input(x)
 
 # imports
 import os
-
-#debug switch
-is_debug = 1
+from ..utils.utils import *
 
 #We Mainly Utilize this module to fight for randomness to adjust program to alsr to certain position.
-
-#simple auxiliaries
-def dbg_info(text):
-
-    global is_debug
-    if is_debug:
-        print text
-    else:
-        return
-
 
 class Processer:
  
@@ -107,8 +95,7 @@ class Processer:
 #interface
 def mem(pid):
 
-    pid = str(pid)
-    pid = pid.strip("[").strip("]")
+    pid = get_pid(pid)
     p = Processer(pid)
     return p
 

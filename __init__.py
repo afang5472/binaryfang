@@ -2,7 +2,9 @@
 from __future__ import absolute_import
 
 #load afang plugin
+from binaryfang.utils.utils import *
 from binaryfang.mm.memtest import *
+from binaryfang.dbg.dbgtest import *
 from pwn.toplevel import *
 
 pwnlib.args.initialize()

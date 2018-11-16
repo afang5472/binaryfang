@@ -10,8 +10,10 @@ wait = lambda x: raw_input(x)
 # imports
 import os
 import ctypes
-#We Utilize this module to attach to remote program to control its' data&code&registers .
+from ..utils.utils import *
+from ..mm.memtest import *
 
+#We Utilize this module to attach to remote program to control its' data&code&registers .
 
 class debugger:
  
@@ -23,6 +25,7 @@ class debugger:
     
     def __init__(self, pid, mappings):
 
+        #initiates with pid && maps
         self.pid          = pid
         self.mappings     = mappings
         self._init()
@@ -35,13 +38,11 @@ class debugger:
         for x in self.mappings:
             print x
 
-
-
 #interface
-def dbg(pid, mappings):
+def dbg(pid):
 
-    pid = str(pid)
-    pid = pid.strip("[").strip("]")
-    p = debugger(pid, mappings)
+    pid = get_pid(pid)
+    mem_mgr = mem(pid)
+    p = debugger(pid, mem_mgr.proc_segs)
     return p
 
