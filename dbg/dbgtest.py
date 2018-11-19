@@ -75,6 +75,7 @@ class debugger:
         regs = UserRegsStruct()
 	libc = ctypes.CDLL("libc.so.6")
         #attach..!
+        self.get_mappingof("libc")
         ptrace_temp = libc.ptrace((PTRACE_ATTACH), self.pid, 0, 0)
         if ptrace_temp != 0:
             libc.perror("print myfault: ")
@@ -93,7 +94,23 @@ class debugger:
             print('rdi = {:016X}'.format(regs.rdi))
             print('rsi = {:016X}'.format(regs.rsi))
 	    break
-        
+
+    #try to match the input string directly, or fail, will search 
+    #all mapping segment, try to find the first match.
+    def get_mappingof(self, search_key):
+
+        mapping_seg = []
+        try:
+            mapping_seg = self.mappings[search_key]
+        except:
+            keys = self.mappings.keys()
+            for key in keys:
+                if search_key in key:
+                    mapping_seg = self.mappings[key]
+                    break
+        for content in mapping_seg :
+
+            print content
 
 #interface
 def dbg(pid):

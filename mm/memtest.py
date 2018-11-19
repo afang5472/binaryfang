@@ -76,8 +76,11 @@ class Processer:
             if len(seg_key) == 0:
                 seg_key = "mmap_" + str(counter)
                 counter += 1
-            self.proc_segs[seg_key] = (addr_start, addr_end, 
-                                       permission, filename)
+            
+            if seg_key not in self.proc_segs.keys():
+                self.proc_segs[seg_key] = [] #init
+            self.proc_segs[seg_key].append((addr_start, addr_end, 
+                                       permission, filename))
         dbg_info(self.proc_segs)
         
 
