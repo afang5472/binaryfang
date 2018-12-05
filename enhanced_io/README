@@ -1,0 +1,7 @@
+I don't really wanna complain but it's trouble some under certain IO scenary of pwntools native io interfaces.   
+
+For example:
+
+ - You need to ssh into a qemu booting procedure to interact with a kernel based challenge.
+ - You need to bounce into deep intranet to achieve some pwning.
+ - You need to establish a relative bottom-level io interface based on pty or what~
