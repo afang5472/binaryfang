@@ -66,26 +66,31 @@ class debugger:
         self.mappings     = mappings
         self._init()
 
+    def get_libc_handle(self):
+
+        self.libc_instance = ctypes.CDLL("libc.so.6")
+
     def _init(self):
         
+        #load libc && initiate user-regs.
+        self.get_libc_handle()
+        regs = UserRegsStruct()
         #Currently attach a target to be debugged.
         #show parameters right.
         dbg_info("dbg: " + str(self.mappings))
-        #load libc && initiate user-regs.
-        regs = UserRegsStruct()
-	libc = ctypes.CDLL("libc.so.6")
         #attach..!
         self.get_mappingof("libc")
-        ptrace_temp = libc.ptrace((PTRACE_ATTACH), self.pid, 0, 0)
+        ptrace_temp = self.libc_instance.ptrace((PTRACE_ATTACH), self.pid, 0, 0)
         if ptrace_temp != 0:
-            libc.perror("print myfault: ")
+            self.libc_instance.perror("print myfault: ")
 
         #attacher entering region
         while 1: 
             #wait
             _, status = os.wait()
             #acquire remote control repeatedly.
-            libc.ptrace((PTRACE_GETREGS), self.pid, 0, ctypes.byref(regs))
+            #should consider symbol loading?
+            self.libc_instance.ptrace((PTRACE_GETREGS), self.pid, 0, ctypes.byref(regs))
             print('rip = {:016X}'.format(regs.rip))
             print('rax = {:016X}'.format(regs.rax))
             print('rbx = {:016X}'.format(regs.rbx))
@@ -111,6 +116,8 @@ class debugger:
         for content in mapping_seg :
 
             print content
+
+        print "show target mapping info finished."
 
 #interface
 def dbg(pid):
