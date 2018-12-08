@@ -137,5 +137,5 @@ class PTY(object):
         os.write(STDOUT_FD, data)
 
 ptyer = PTY()
-ptyer._process(["/usr/bin/ssh","-p22", "root@localhost"])
+ptyer._process(["/usr/bin/ssh","-p2222", "syscall@pwnable.kr"])
 ptyer._interactive()
