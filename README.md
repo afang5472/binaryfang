@@ -1,5 +1,5 @@
 ## binaryfang
----
+
 
 Binaryfang is a binary exploitation auxliary tool which currently supports:
 
@@ -11,7 +11,8 @@ Binaryfang is a binary exploitation auxliary tool which currently supports:
 - automation debugging(under develop && thinking:) )
 
 ### Why Creating This
----
+
+-----
 
 When I first taste pwnable about 1.5 year ago, 
 I , just like other beginners, enjoy the convenience 
@@ -32,34 +33,46 @@ This module will continue under the support of pwntools `process`
 module, and `ptyprocess` for tty simulator. So it's install procedure just requires serveral lines of bash.
 
 ### Dependency
----
+
+-----
 
 This tool currently rely on default python, pwntools, and ptyprocess.
 Will remove requirements from pwntools soon.
 
 ### Install 
----
 
-`git clone https://github.com/0xcc-Since2016/binaryfang`
+-----
 
-`cd binaryfang`
+```bash 
 
-`chmod +x ./update && ./update`
+git clone https://github.com/0xcc-Since2016/binaryfang
 
-`pip install ptyprocess`
+cd binaryfang
+
+chmod +x ./update && ./update
+
+pip install ptyprocess
+
+```
 
 ### Usage
----
 
-`>>> from binaryfang import *`
+-----
 
-`>>> you've got pwntools all functionality and binaryfang's at the same time.`
+```bash 
+
+>>> from binaryfang import *
+
+>>> you've got pwntools all functionality and binaryfang's at the same time.
+
+```
 
 For detailed usage example, please see examples folder inside this repo. the examples folder gives serveral usage sample in CTFs which might give you some inspiration :)
 
 
 ### Functionality
----
+
+-----
 
 
 - July,15 2018 Adding basic materials (basic mem reader, inspector)
