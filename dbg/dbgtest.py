@@ -5,7 +5,6 @@
 # desc:
 
 #lambs:
-wait = lambda x: raw_input(x)
 
 # imports
 import os

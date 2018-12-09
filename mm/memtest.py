@@ -38,7 +38,6 @@ class Processer:
         self.get_exe_parameters()
         self.parse_mapping()
 
-
     def get_exe_parameters(self):
         
         self.exeutable = os.readlink(self.exeutable)
@@ -81,7 +80,7 @@ class Processer:
                 self.proc_segs[seg_key] = [] #init
             self.proc_segs[seg_key].append((addr_start, addr_end, 
                                        permission, filename))
-        dbg_info(self.proc_segs)
+        #dbg_info(self.proc_segs)
         
 
     #facilities...
