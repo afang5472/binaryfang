@@ -11,12 +11,16 @@ import os
 import ctypes
 from ..utils.utils import *
 from ..mm.memtest import *
+import time
 
 #We Utilize this module to attach to remote program to control its' data&code&registers .
 
-PTRACE_TRACEME= 0
-PTRACE_ATTACH = 0x10 
-PTRACE_GETREGS= 0xc
+PTRACE_TRACEME    = 0 
+PTRACE_ATTACH     = 0x10 
+PTRACE_GETREGS    = 0xc 
+PTRACE_DETACH     = 0x11 
+PTRACE_SINGLESTEP = 0x9 
+PTRACE_CONT       = 0x7
 
 class UserRegsStruct(ctypes.Structure):
     _fields_ = [
@@ -67,37 +71,82 @@ class debugger:
 
     def get_libc_handle(self):
 
-        self.libc_instance = ctypes.CDLL("libc.so.6")
+        self.libc = ctypes.CDLL("libc.so.6")
 
     def _init(self):
         
         #load libc && initiate user-regs.
+
         self.get_libc_handle()
-        regs = UserRegsStruct()
+        self.regs = UserRegsStruct()
+        self.reserved_regs = UserRegsStruct() #reserve when alter
+
         #Currently attach a target to be debugged.
         #show parameters right.
+
         dbg_info("dbg: " + str(self.mappings))
         #attach..!
+        #test get some mapping sections , ready for breaking.
         self.get_mappingof("libc")
-        ptrace_temp = self.libc_instance.ptrace((PTRACE_ATTACH), self.pid, 0, 0)
-        if ptrace_temp != 0:
-            self.libc_instance.perror("print myfault: ")
+        if self.libc.ptrace((PTRACE_ATTACH), self.pid, 0, 0) != 0:
+            self.libc.perror("print myfault: ")
 
         #attacher entering region
+        cnt = 0
         while 1: 
-            #wait
             _, status = os.wait()
-            #acquire remote control repeatedly.
-            #should consider symbol loading?
-            self.libc_instance.ptrace((PTRACE_GETREGS), self.pid, 0, ctypes.byref(regs))
-            print('rip = {:016X}'.format(regs.rip))
-            print('rax = {:016X}'.format(regs.rax))
-            print('rbx = {:016X}'.format(regs.rbx))
-            print('rcx = {:016X}'.format(regs.rcx))
-            print('rdx = {:016X}'.format(regs.rdx))
-            print('rdi = {:016X}'.format(regs.rdi))
-            print('rsi = {:016X}'.format(regs.rsi))
-	    break
+            #automatic debugging procedure fill-in here.
+            cnt += 1
+            self.getregs()
+            self.cont()
+            self.detach()
+            break
+   
+#todo: loading with symbol resolver.
+
+    def cont(self):
+        #continue execution
+        assert self.libc, "[*]libc instance is None"
+        if self.libc.ptrace((PTRACE_CONT), self.pid, 0, 0) != 0:
+            self.libc.perror("continue exec error: ")
+        return 
+        
+    def getregs(self):
+        #get current regs values
+        assert self.libc, "[*]libc instance is None"
+        if self.libc.ptrace((PTRACE_GETREGS), self.pid, 0, ctypes.byref(self.regs)) != 0:
+            self.libc.perror("get regs error: ")
+
+        dbg_info('rip = {:016X}'.format(self.regs.rip))
+        dbg_info('rax = {:016X}'.format(self.regs.rax))
+        dbg_info('rbx = {:016X}'.format(self.regs.rbx))
+        dbg_info('rcx = {:016X}'.format(self.regs.rcx))
+        dbg_info('rdx = {:016X}'.format(self.regs.rdx))
+        dbg_info('rdi = {:016X}'.format(self.regs.rdi))
+        dbg_info('rsi = {:016X}'.format(self.regs.rsi))
+        dbg_info('r8  = {:016X}'.format(self.regs.r8))
+        dbg_info('r9  = {:016X}'.format(self.regs.r9))
+        dbg_info('r10 = {:016X}'.format(self.regs.r10))
+        dbg_info('r11 = {:016X}'.format(self.regs.r11))
+        dbg_info('r12 = {:016X}'.format(self.regs.r12))
+        dbg_info('r13 = {:016X}'.format(self.regs.r13))
+        dbg_info('r14 = {:016X}'.format(self.regs.r14))
+        dbg_info('r15 = {:016X}'.format(self.regs.r15))
+        return 
+    
+    def singlestep_forward(self):
+        #singlestep debugging mode
+        assert self.libc, "[*]libc instance is None"
+        if self.libc.ptrace((PTRACE_SINGLESTEP), self.pid, 0, 0) != 0:
+            self.libc.perror("singlestep error: ")
+        return 
+
+    def detach(self):
+        #detach the debugger from here.
+        assert self.libc, "[*]libc instance is None"
+        if self.libc.ptrace((PTRACE_DETACH), self.pid, 0, 0) != 0:
+            self.libc.perror("detach error: ")
+        return 
 
     #try to match the input string directly, or fail, will search 
     #all mapping segment, try to find the first match.
@@ -116,7 +165,7 @@ class debugger:
 
             print content
 
-        print "show target mapping info finished."
+        #print "show target mapping info finished."
 
 #interface
 def dbg(pid):
