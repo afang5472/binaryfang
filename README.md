@@ -12,36 +12,34 @@ Binaryfang is a binary exploitation auxliary tool which currently supports:
 
 ### Why Creating This
 
------
 
-When I first taste pwnable about 1.5 year ago, 
-I , just like other beginners, enjoy the convenience 
+When I first taste pwnable about 1.5 year ago,   
+I , just like other beginners, enjoy the convenience   
 with pwntools that helps io, gef or peda that helps debug.
 
-But when I get deeper into pwnables, 
-I found some relative extreme scene requires 
-me to be equipped with more automatic or powerful tools to 
-increase my effiency than simple handy debugging techniques.
+But when I get deeper into pwnables,  
+I found some relative extreme scene requires   
+me to be equipped with more automatic or powerful tools to  
+increase my effiency than simple handy debugging techniques.  
 
 And pwntools io is not always stable as I expect :(
 
-So, I added a module for pwntools on a boring Sunday afternoon
-at my dormitory. named it as `binaryfang` , some habits to name 
-things with a connection to my id :)
+So, I added a module for pwntools on a boring Sunday afternoon  
+at my dormitory. named it as `binaryfang` , some habits to name  
+things with a connection to my id :)  
 
-This module will continue under the support of pwntools `process` 
-module, and `ptyprocess` for tty simulator. So it's install procedure just requires serveral lines of bash.
+This module will continue under the support of pwntools `process`   
+module, and `ptyprocess` for tty simulator. So it's install procedure just requires serveral lines of bash.  
 
 ### Dependency
 
------
 
-This tool currently rely on default python, pwntools, and ptyprocess.
+This tool currently rely on default python, pwntools, and ptyprocess.  
+
 Will remove requirements from pwntools soon.
 
 ### Install 
 
------
 
 ```bash 
 
@@ -57,7 +55,6 @@ pip install ptyprocess
 
 ### Usage
 
------
 
 ```bash 
 
@@ -71,8 +68,6 @@ For detailed usage example, please see examples folder inside this repo. the exa
 
 
 ### Functionality
-
------
 
 
 - July,15 2018 Adding basic materials (basic mem reader, inspector)
