@@ -29,7 +29,9 @@ at my dormitory. named it as `binaryfang` , some habits to name
 things with a connection to my id :)  
 
 This module will continue under the support of pwntools `process`   
-module, and `ptyprocess` for tty simulator. So it's install procedure just requires serveral lines of bash.  
+module, and `ptyprocess` for tty simulator.  
+
+So it's install procedure just requires serveral lines of bash.  
 
 ### Dependency
 
@@ -64,7 +66,9 @@ pip install ptyprocess
 
 ```
 
-For detailed usage example, please see examples folder inside this repo. the examples folder gives serveral usage sample in CTFs which might give you some inspiration :)
+For detailed usage example, please see examples folder inside this repo.  
+
+The examples folder gives serveral usage sample in CTFs which might give you some inspiration :)
 
 
 ### Functionality
