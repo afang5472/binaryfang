@@ -88,8 +88,9 @@ class debugger:
         #attach..!
         #test get some mapping sections , ready for breaking.
         self.get_mappingof("libc")
-        if self.libc.ptrace((PTRACE_ATTACH), self.pid, 0, 0) != 0:
-            self.libc.perror("print myfault: ")
+
+        #ptrace attach
+        self.raw_attach()
 
         #attacher entering region
         cnt = 0
@@ -103,6 +104,13 @@ class debugger:
             break
    
 #todo: loading with symbol resolver.
+
+    def raw_attach(self):
+
+        assert self.libc, "[*]libc instance is None"
+        if self.libc.ptrace((PTRACE_ATTACH), self.pid, 0, 0) != 0:
+            self.libc.perror("ptrace attach error: ")
+        return 
 
     def cont(self):
         #continue execution
@@ -132,6 +140,8 @@ class debugger:
         dbg_info('r13 = {:016X}'.format(self.regs.r13))
         dbg_info('r14 = {:016X}'.format(self.regs.r14))
         dbg_info('r15 = {:016X}'.format(self.regs.r15))
+        dbg_info('rsp = {:016X}'.format(self.regs.rsp))
+        dbg_info('rbp = {:016X}'.format(self.regs.rbp))
         return 
     
     def singlestep_forward(self):
